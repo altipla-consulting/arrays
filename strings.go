@@ -29,3 +29,7 @@ func (slice *Strings) Scan(value interface{}) error {
 
 	return nil
 }
+
+func SearchStrings(column string) string {
+	return fmt.Sprintf("JSON_CONTAINS(%s, JSON_QUOTE(?), '$')", column)
+}

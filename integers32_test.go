@@ -85,3 +85,30 @@ func TestLoadSaveIntegers32WithContent(t *testing.T) {
 	require.Equal(t, other.Foo, Integers32{3, 4})
 	require.EqualValues(t, other.Foo, []int32{3, 4})
 }
+
+func TestIntegers32Search(t *testing.T) {
+	initIntegers32DB(t)
+	defer finishIntegers32DB()
+
+	model := &integers32Model{
+		Foo: []int32{10, 20},
+	}
+	require.Nil(t, integers32Models.InsertReturning(model))
+
+	model = &integers32Model{
+		Foo: []int32{10, 30},
+	}
+	require.Nil(t, integers32Models.InsertReturning(model))
+
+	models := []*integers32Model{}
+
+	require.Nil(t, integers32Models.Find(SearchIntegers32("foo"), 10).All(&models))
+	require.Len(t, models, 2)
+
+	require.Nil(t, integers32Models.Find(SearchIntegers32("foo"), "10").All(&models))
+	require.Len(t, models, 2)
+
+	require.Nil(t, integers32Models.Find(SearchIntegers32("foo"), 20).All(&models))
+	require.Len(t, models, 1)
+	require.EqualValues(t, models[0].ID, 1)
+}

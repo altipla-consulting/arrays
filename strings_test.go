@@ -85,3 +85,26 @@ func TestLoadSaveStringsWithContent(t *testing.T) {
 	require.Equal(t, other.Foo, Strings{"foo", "bar"})
 	require.EqualValues(t, other.Foo, []string{"foo", "bar"})
 }
+
+func TestStringsSearch(t *testing.T) {
+	initStringsDB(t)
+	defer finishStringsDB()
+
+	model := &stringsModel{
+		Foo: []string{"foo", "bar"},
+	}
+	require.Nil(t, stringsModels.InsertReturning(model))
+
+	model = &stringsModel{
+		Foo: []string{"foo", "baz"},
+	}
+	require.Nil(t, stringsModels.InsertReturning(model))
+
+	models := []*stringsModel{}
+	require.Nil(t, stringsModels.Find(SearchStrings("foo"), "foo").All(&models))
+	require.Len(t, models, 2)
+
+	require.Nil(t, stringsModels.Find(SearchStrings("foo"), "bar").All(&models))
+	require.Len(t, models, 1)
+	require.EqualValues(t, models[0].ID, 1)
+}

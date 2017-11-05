@@ -85,3 +85,30 @@ func TestLoadSaveIntegers64WithContent(t *testing.T) {
 	require.Equal(t, other.Foo, Integers64{3, 4})
 	require.EqualValues(t, other.Foo, []int64{3, 4})
 }
+
+func TestIntegers64Search(t *testing.T) {
+	initIntegers64DB(t)
+	defer finishIntegers64DB()
+
+	model := &integers64Model{
+		Foo: []int64{10, 20},
+	}
+	require.Nil(t, integers64Models.InsertReturning(model))
+
+	model = &integers64Model{
+		Foo: []int64{10, 30},
+	}
+	require.Nil(t, integers64Models.InsertReturning(model))
+
+	models := []*integers64Model{}
+
+	require.Nil(t, integers64Models.Find(SearchIntegers64("foo"), 10).All(&models))
+	require.Len(t, models, 2)
+
+	require.Nil(t, integers64Models.Find(SearchIntegers64("foo"), "10").All(&models))
+	require.Len(t, models, 2)
+
+	require.Nil(t, integers64Models.Find(SearchIntegers64("foo"), 20).All(&models))
+	require.Len(t, models, 1)
+	require.EqualValues(t, models[0].ID, 1)
+}

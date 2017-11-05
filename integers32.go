@@ -29,3 +29,7 @@ func (slice *Integers32) Scan(value interface{}) error {
 
 	return nil
 }
+
+func SearchIntegers32(column string) string {
+	return fmt.Sprintf("JSON_CONTAINS(%s, CAST(? AS CHAR), '$')", column)
+}
