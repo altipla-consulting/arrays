@@ -112,3 +112,18 @@ func TestIntegers64Search(t *testing.T) {
 	require.Len(t, models, 1)
 	require.EqualValues(t, models[0].ID, 1)
 }
+
+func TestIntegers64SaveNil(t *testing.T) {
+	initIntegers64DB(t)
+	defer finishIntegers64DB()
+
+	model := new(integers64Model)
+	require.Nil(t, integers64Models.InsertReturning(model))
+
+	row, err := integers64Sess.QueryRow(`SELECT foo FROM arrays_test`)
+	require.NoError(t, err)
+
+	var foo string
+	require.NoError(t, row.Scan(&foo))
+	require.Equal(t, "[]", foo)
+}

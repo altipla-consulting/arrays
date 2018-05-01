@@ -9,6 +9,10 @@ import (
 type Integers32 []int32
 
 func (slice Integers32) Value() (driver.Value, error) {
+	if slice == nil {
+		return "[]", nil
+	}
+
 	serialized, err := json.Marshal(slice)
 	if err != nil {
 		return nil, fmt.Errorf("arrays/integers32: cannot serialize value: %s", err)

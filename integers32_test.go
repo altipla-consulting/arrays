@@ -112,3 +112,18 @@ func TestIntegers32Search(t *testing.T) {
 	require.Len(t, models, 1)
 	require.EqualValues(t, models[0].ID, 1)
 }
+
+func TestIntegers32SaveNil(t *testing.T) {
+	initIntegers32DB(t)
+	defer finishIntegers32DB()
+
+	model := new(integers32Model)
+	require.Nil(t, integers32Models.InsertReturning(model))
+
+	row, err := integers32Sess.QueryRow(`SELECT foo FROM arrays_test`)
+	require.NoError(t, err)
+
+	var foo string
+	require.NoError(t, row.Scan(&foo))
+	require.Equal(t, "[]", foo)
+}

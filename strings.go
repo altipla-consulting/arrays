@@ -9,6 +9,10 @@ import (
 type Strings []string
 
 func (slice Strings) Value() (driver.Value, error) {
+	if slice == nil {
+		return "[]", nil
+	}
+
 	serialized, err := json.Marshal(slice)
 	if err != nil {
 		return nil, fmt.Errorf("arrays/strings: cannot serialize value: %s", err)

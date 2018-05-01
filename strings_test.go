@@ -108,3 +108,18 @@ func TestStringsSearch(t *testing.T) {
 	require.Len(t, models, 1)
 	require.EqualValues(t, models[0].ID, 1)
 }
+
+func TestStringsSaveNil(t *testing.T) {
+	initStringsDB(t)
+	defer finishStringsDB()
+
+	model := new(stringsModel)
+	require.Nil(t, stringsModels.InsertReturning(model))
+
+	row, err := stringsSess.QueryRow(`SELECT foo FROM arrays_test`)
+	require.NoError(t, err)
+
+	var foo string
+	require.NoError(t, row.Scan(&foo))
+	require.Equal(t, "[]", foo)
+}
