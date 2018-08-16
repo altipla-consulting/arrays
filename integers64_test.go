@@ -57,6 +57,17 @@ func finishIntegers64DB() {
 	integers64Sess.Close()
 }
 
+func TestLoadNilIntegers64(t *testing.T) {
+	initIntegers64DB(t)
+	defer finishIntegers64DB()
+
+	_, err := integers64Sess.Exec(`INSERT INTO arrays_test() VALUES ()`)
+	require.NoError(t, err)
+
+	model := new(integers64Model)
+	require.Nil(t, integers64Models.Find(1).One(model))
+}
+
 func TestLoadSaveIntegers64(t *testing.T) {
 	initIntegers64DB(t)
 	defer finishIntegers64DB()

@@ -57,6 +57,17 @@ func finishIntegers32DB() {
 	integers32Sess.Close()
 }
 
+func TestLoadNilIntegers32(t *testing.T) {
+	initIntegers32DB(t)
+	defer finishIntegers32DB()
+
+	_, err := integers32Sess.Exec(`INSERT INTO arrays_test() VALUES ()`)
+	require.NoError(t, err)
+
+	model := new(integers32Model)
+	require.Nil(t, integers32Models.Find(1).One(model))
+}
+
 func TestLoadSaveIntegers32(t *testing.T) {
 	initIntegers32DB(t)
 	defer finishIntegers32DB()
