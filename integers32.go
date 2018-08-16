@@ -22,6 +22,10 @@ func (slice Integers32) Value() (driver.Value, error) {
 }
 
 func (slice *Integers32) Scan(value interface{}) error {
+	if value == nil {
+		return nil
+	}
+
 	b, ok := value.([]byte)
 	if !ok {
 		return fmt.Errorf("arrays/integers32: cannot scan type into bytes: %T", value)

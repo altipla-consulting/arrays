@@ -57,6 +57,17 @@ func finishStringsDB() {
 	stringsSess.Close()
 }
 
+func TestLoadNilStrings(t *testing.T) {
+	initStringsDB(t)
+	defer finishStringsDB()
+
+	_, err := stringsSess.Exec(`INSERT INTO arrays_test() VALUES ()`)
+	require.NoError(t, err)
+
+	model := new(stringsModel)
+	require.Nil(t, stringsModels.Find(1).One(model))
+}
+
 func TestLoadSaveStrings(t *testing.T) {
 	initStringsDB(t)
 	defer finishStringsDB()
