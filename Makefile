@@ -9,7 +9,7 @@ deps:
 	go get -u github.com/mgechev/revive
 
 	go get -u github.com/stretchr/testify
-	go get -u upper.io/db.v3
+	go get -u upper.io/db.v3/mysql
 
 test:
 	revive -formatter friendly
