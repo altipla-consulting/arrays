@@ -17,7 +17,7 @@ This library has no external dependencies outside the Go standard library.
 
 ### Usage
 
-You can use the types of this package in your models structs when working with `database/sql`:
+You can use the types of this package in your models structs when working with `database/sql`, `upper.io/db.v3` or `github.com/altipla-consulting/database`:
 
 ```go
 type MyModel struct {
