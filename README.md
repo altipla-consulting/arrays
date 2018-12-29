@@ -1,6 +1,8 @@
 
 # arrays
 
+> **DEPRECATED:** Use https://github.com/altipla-consulting/libs instead.
+
 [![GoDoc](https://godoc.org/github.com/altipla-consulting/arrays?status.svg)](https://godoc.org/github.com/altipla-consulting/arrays)
 
 Models for integer and string arrays in MySQL.
